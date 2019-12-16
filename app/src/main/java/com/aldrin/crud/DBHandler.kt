@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 import java.lang.Exception
 
@@ -69,6 +70,20 @@ class DBHandler(context: Context, name: String?, factory: SQLiteDatabase.CursorF
             Toast.makeText(mCtx, e.message, Toast.LENGTH_SHORT).show()
         }
         db.close()
+    }
+
+    fun deleteCustomer(customerID : Int) : Boolean {
+        val qry = "Delete From $CUSTOMERS_TABLE_NAME where $COLUMN_CUSTOMERID = $customerID"
+        val db = this.writableDatabase
+        var result : Boolean = false
+        try {
+            val cursor = db.execSQL(qry)
+            result = true
+        } catch (e : Exception) {
+            Log.e(ContentValues.TAG, "Error Deleting")
+        }
+        db.close()
+        return result
     }
 }
 
