@@ -85,5 +85,22 @@ class DBHandler(context: Context, name: String?, factory: SQLiteDatabase.CursorF
         db.close()
         return result
     }
+
+    fun updateCustomer(id : String, customerName : String, maxCredit : String) : Boolean {
+        val db = this.writableDatabase
+        var result : Boolean = false
+        val contentValues = ContentValues()
+        contentValues.put(COLUMN_CUSTOMERNAME, customerName)
+        contentValues.put(COLUMN_MAXCREDIT, maxCredit.toDouble())
+
+        try {
+            db.update(CUSTOMERS_TABLE_NAME, contentValues, "$COLUMN_CUSTOMERID = ?", arrayOf(id))
+            result = true
+        } catch (e : Exception) {
+            Log.e(ContentValues.TAG, "Error Updating")
+            result = false
+        }
+        return result
+    }
 }
 
